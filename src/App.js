@@ -1,6 +1,7 @@
 import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
+import Book from './components/Book'
 
 class BooksApp extends React.Component {
   state = {
@@ -10,12 +11,19 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    showSearchPage: false
+
+    Books:[],
+    showSearchPage: false,
+    name: ""
   }
 
   render() {
     return (
+      
       <div className="app">
+
+      <Book></Book>
+
         {this.state.showSearchPage ? (
           <div className="search-books">
             <div className="search-books-bar">
