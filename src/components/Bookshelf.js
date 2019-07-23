@@ -7,7 +7,8 @@ class Bookshelf extends Component
 {
     static propTypes = {
         books: PropTypes.array.isRequired,
-        shelfTitle: PropTypes.string.isRequired
+        shelfTitle: PropTypes.string.isRequired,
+        changeBookShelf: PropTypes.func.isRequired,
     }
 
     componentDidMount()
@@ -15,6 +16,8 @@ class Bookshelf extends Component
         console.log(this.props.books);
         //debugger;
     }
+
+    
 
     render(){
         return(
@@ -26,7 +29,14 @@ class Bookshelf extends Component
 
                     {this.props.books.map(book =>
                     <li>
-                        <Book title={book.title} authors={book.authors[0]} width={128} height={192} backgroundImage={book.imageLinks.smallThumbnail} >
+                        <Book 
+                        title={book.title} 
+                        authors={book.authors[0]} 
+                        width={128} 
+                        height={192} 
+                        backgroundImage={book.imageLinks.smallThumbnail} 
+                        changeBookShelf={this.props.changeBookShelf} 
+                        book={book}>
                     
                         </Book>
                     </li>)

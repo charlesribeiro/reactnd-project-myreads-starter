@@ -9,6 +9,9 @@ class Book extends Component{
             width: PropTypes.number,
             height: PropTypes.number,
             backgroundImage: PropTypes.string,
+            changeBookShelf: PropTypes.func.isRequired,
+            book: PropTypes.object.isRequired
+
     }
 
     changeShelfHandler(event)
@@ -31,7 +34,7 @@ class Book extends Component{
                           <div className="book-top">
                             <div className="book-cover" style={{ width: this.props.width, height: this.props.height, backgroundImage: this.props.backgroundImage? "url("+ this.props.backgroundImage+ ")":"error" }}></div>
                             <div className="book-shelf-changer">
-                              <select value ={this.props.shelf} onChange={this.changeShelfHandler}>
+                              <select value ={this.props.shelf} onChange={(e)=>this.props.changeBookShelf(e, this.props.book)}>
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>

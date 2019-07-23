@@ -14,7 +14,7 @@ class BooksApp extends React.Component {
 
     books:[],
     showSearchPage: false,
-    name: ""
+    name: "",
   }
 
   componentDidMount(){
@@ -28,6 +28,18 @@ class BooksApp extends React.Component {
 
       // debugger;
     })
+  }
+
+  changeBookShelf= (event, book) =>{
+
+    console.log("veio aqui...." , event.target.value, book.id);
+
+    BooksAPI.update(book, event.target.value).then((books)=> {debugger;})
+
+    // if(this.state.books.)
+
+
+
   }
 
   render() {
@@ -61,9 +73,9 @@ class BooksApp extends React.Component {
               <h1>MyReads</h1>
             </div>
 
-            <Bookshelf shelfTitle="Currently reading" books={this.state.books.filter(t=>t.shelf ==="currentlyReading")}></Bookshelf>
-            <Bookshelf shelfTitle="Want to read" books={this.state.books.filter(t=>t.shelf ==="wantToRead")}></Bookshelf>
-            <Bookshelf shelfTitle="Read" books={this.state.books.filter(t=>t.shelf ==="read")}></Bookshelf>
+            <Bookshelf shelfTitle="Currently reading" changeBookShelf ={this.changeBookShelf} books={this.state.books.filter(t=>t.shelf ==="currentlyReading")}></Bookshelf>
+            <Bookshelf shelfTitle="Want to read" changeBookShelf ={this.changeBookShelf} books={this.state.books.filter(t=>t.shelf ==="wantToRead")}></Bookshelf>
+            <Bookshelf shelfTitle="Read" changeBookShelf ={this.changeBookShelf} books={this.state.books.filter(t=>t.shelf ==="read")}></Bookshelf>
 
             <div className="open-search">
               <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
