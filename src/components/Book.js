@@ -11,8 +11,19 @@ class Book extends Component{
             backgroundImage: PropTypes.string,
     }
 
+    changeShelfHandler(event)
+    {
+      console.log("foi", event.target.value);
+    }
+
     render()
     {
+
+        let authors = "No author information";
+        if(this.props.authors)
+        {
+          authors = this.props.authors;
+        }
 
         console.log(this.props.backgroundImage);
         return(
@@ -20,7 +31,7 @@ class Book extends Component{
                           <div className="book-top">
                             <div className="book-cover" style={{ width: this.props.width, height: this.props.height, backgroundImage: this.props.backgroundImage? "url("+ this.props.backgroundImage+ ")":"error" }}></div>
                             <div className="book-shelf-changer">
-                              <select>
+                              <select value ={this.props.shelf} onChange={this.changeShelfHandler}>
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
@@ -30,7 +41,7 @@ class Book extends Component{
                             </div>
                           </div>
                           <div className="book-title">{this.props.title}</div>
-                          <div className="book-authors">{this.props.authors}</div>
+                          <div className="book-authors">{authors}</div>
                 </div>
         );
     }
