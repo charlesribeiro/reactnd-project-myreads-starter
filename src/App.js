@@ -7,16 +7,7 @@ import Book from './components/Book';
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-
     books:[],
-    showSearchPage: false,
-    name: "",
     booksFromSearchAPI:[],
     searchString:""
   }
@@ -32,16 +23,16 @@ class BooksApp extends React.Component {
     })
   }
 
-  changeSearchStatus= (event, book)=>{
+  changeSearchStatus= (event)=>{
     const searchString = event.target.value;
 
     this.setState({searchString});
 
-    console.log(searchString);
+    // console.log(searchString);
 
     BooksAPI.search(searchString).then((booksFromSearchAPI)=>{
     
-    console.log(booksFromSearchAPI);
+    // console.log(booksFromSearchAPI);
 
 
     if(booksFromSearchAPI)
@@ -60,25 +51,23 @@ class BooksApp extends React.Component {
     {
       this.setState({booksFromSearchAPI:[]});
     }
-
-
-
-
     
     });
   }
 
   changeBookShelf= (event, bookToUpdate) =>{
 
-    // console.log("veio aqui...." , event.target.value, bookToUpdate.id);
-
     bookToUpdate.shelf = event.target.value;
 
     BooksAPI.update(bookToUpdate, event.target.value).then((booksFromAPI)=> {
       console.log(booksFromAPI);
-      debugger;
-    
+
+      this.setState(currentState => ({
+        books: [currentState.books.filter(livro => livro.id !== bookToUpdate.id), bookToUpdate]
+      }, ()=> {console.log("ok");}))
     })
+
+
 
   }
 
@@ -88,9 +77,7 @@ class BooksApp extends React.Component {
         <Route  path="/search" render={()=> (
           <div className="search-books">
             <div className="search-books-bar">
-              {/* <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button> */}
-              {/* <button className="close-search" onClick={this.handlePageSwitch}>Close</button> */}
-              {/* <button className="close-search" onClick={this.handlePageSwitch}>Close</button> */}
+
               <Link to="/">Close</Link>
               <div className="search-books-input-wrapper">
 
@@ -101,7 +88,7 @@ class BooksApp extends React.Component {
             <div className="search-books-results">
               <ol className="books-grid">
                 {/* <Bookshelf shelfTitle="Search results" changeBookShelf ={this.changeBookShelf} books={this.state.booksFromSearchAPI}></Bookshelf> */}
-                {(this.state.booksFromSearchAPI !== undefined) ?this.state.booksFromSearchAPI.map(book =>
+                {(this.state.booksFromSearchAPI !== undefined) ? this.state.booksFromSearchAPI.map(book =>
                     <li>
                         <Book 
                         authors={book.authors? book.authors[0]: "No author info"} 
@@ -109,7 +96,6 @@ class BooksApp extends React.Component {
                         height={192} 
                         changeBookShelf={this.changeBookShelf} 
                         book={book}>
-                    
                         </Book>
                     </li>) :"No results yet"
                     
@@ -131,7 +117,6 @@ class BooksApp extends React.Component {
             <Bookshelf shelfTitle="Read" changeBookShelf ={this.changeBookShelf} books={this.state.books.filter(t=>t.shelf ==="read")}></Bookshelf>
 
             <div className="open-search">
-              {/* <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button> */}
               <Link to = "/search">Add a book</Link>
             </div>
           
