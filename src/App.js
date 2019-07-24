@@ -1,8 +1,8 @@
 import React from 'react'
+import { Route, Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Bookshelf from './components/Bookshelf';
-import Search from './components/Search';
 import Book from './components/Book';
 
 class BooksApp extends React.Component {
@@ -17,7 +17,8 @@ class BooksApp extends React.Component {
     books:[],
     showSearchPage: false,
     name: "",
-    booksFromSearchAPI:[]
+    booksFromSearchAPI:[],
+    searchString:""
   }
 
   componentDidMount(){
@@ -33,21 +34,35 @@ class BooksApp extends React.Component {
 
   changeSearchStatus= (event, book)=>{
     const searchString = event.target.value;
+
+    this.setState({searchString});
+
     console.log(searchString);
 
     BooksAPI.search(searchString).then((booksFromSearchAPI)=>{
     
     console.log(booksFromSearchAPI);
 
-    if(booksFromSearchAPI.error)
+
+    if(booksFromSearchAPI)
     {
-      debugger;
-      this.setState({booksFromSearchAPI:[]});
+      if(booksFromSearchAPI.error || this.state.searchString.length<1)
+      {
+        this.setState({booksFromSearchAPI:[]});
+      }
+      else
+      {
+        this.setState({booksFromSearchAPI});
+      }
     }
+
     else
     {
-      this.setState({booksFromSearchAPI});
+      this.setState({booksFromSearchAPI:[]});
     }
+
+
+
 
     
     });
@@ -62,12 +77,6 @@ class BooksApp extends React.Component {
     BooksAPI.update(bookToUpdate, event.target.value).then((booksFromAPI)=> {
       console.log(booksFromAPI);
       debugger;
-
-      this.setState(state=>({
-
-        // https://stackoverflow.com/questions/48208665/how-to-update-merge-array-values-in-react-redux-correctly
-
-      }))
     
     })
 
@@ -76,21 +85,15 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-
-        {this.state.showSearchPage ? (
-          
+        <Route  path="/search" render={()=> (
           <div className="search-books">
             <div className="search-books-bar">
-              <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
+              {/* <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button> */}
+              {/* <button className="close-search" onClick={this.handlePageSwitch}>Close</button> */}
+              {/* <button className="close-search" onClick={this.handlePageSwitch}>Close</button> */}
+              <Link to="/">Close</Link>
               <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
 
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
                 <input type="text" onChange={this.changeSearchStatus} placeholder="Search by title or author"/>
 
               </div>
@@ -108,13 +111,16 @@ class BooksApp extends React.Component {
                         book={book}>
                     
                         </Book>
-                    </li>) :"aaarg"
+                    </li>) :"No results yet"
                     
                 }
               </ol>
             </div>
           </div>
-        ) : (
+        )}/>
+        
+        <Route exact path="/" render={()=> (
+
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
@@ -125,11 +131,16 @@ class BooksApp extends React.Component {
             <Bookshelf shelfTitle="Read" changeBookShelf ={this.changeBookShelf} books={this.state.books.filter(t=>t.shelf ==="read")}></Bookshelf>
 
             <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
+              {/* <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button> */}
+              <Link to = "/search">Add a book</Link>
             </div>
+          
+            )}
           </div>
-        )}
-      </div>
+
+        )}/>
+
+        </div>
     )
   }
 }
