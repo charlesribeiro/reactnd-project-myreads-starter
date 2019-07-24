@@ -30,11 +30,23 @@ class BooksApp extends React.Component {
     })
   }
 
-  changeBookShelf= (event, book) =>{
+  changeBookShelf= (event, bookToUpdate) =>{
 
-    console.log("veio aqui...." , event.target.value, book.id);
+    console.log("veio aqui...." , event.target.value, bookToUpdate.id);
 
-    BooksAPI.update(book, event.target.value).then((books)=> {debugger;})
+    bookToUpdate.shelf = event.target.value;
+
+    BooksAPI.update(bookToUpdate, event.target.value).then((booksFromAPI)=> {
+      console.log(booksFromAPI);
+      debugger;
+
+      this.setState(state=>({
+
+        // https://stackoverflow.com/questions/48208665/how-to-update-merge-array-values-in-react-redux-correctly
+
+      }))
+    
+    })
 
     // if(this.state.books.)
 
