@@ -43,6 +43,26 @@ class BooksApp extends React.Component {
       }
       else
       {
+        console.log(booksFromSearchAPI);
+
+        booksFromSearchAPI.map(book=> {
+          console.log(book);
+
+          const bookFoundOnMainPage = this.state.books.filter(bookOnMainPage =>  bookOnMainPage.id === book.id)[0];
+
+          console.log(bookFoundOnMainPage);
+
+          // book.shelf = "read";
+          book.shelf = bookFoundOnMainPage ? bookFoundOnMainPage.shelf: "none";
+
+          this.setState(currentState => ({
+            books: [currentState.books.filter(livro => livro.id !== book.id), book] //caso o livro já exista na tela principal ele é retirado e depois adicionado com o novo valor de shelf
+
+
+         
+          }, ()=> {console.log("ok");}))
+        })
+        debugger;
         this.setState({booksFromSearchAPI});
       }
     }

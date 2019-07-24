@@ -1,16 +1,16 @@
 # MyReads Project
 
-Projeto "MyReads: A Book Lending App" da Udacity Brasil.
+Projeto "MyReads: A Book Lending App" da Udacity Brasil. Requisito para o Nanodegree Front-End Avançado.
 Este projeto consiste na criação de uma página em React que permita a visualização da biblioteca de livros do usuário.
 Os dados que alimentam a página vêm de APIs externas, nas quais as alterações feitas pelo usuário são salvas.
 
-
-![alt text](https://raw.githubusercontent.com/charlesribeiro/reactnd-project-myreads-starter/tree/master/img/myreads.jpg) src
+Tela de exemplo:                
+![alt text](https://raw.githubusercontent.com/charlesribeiro/reactnd-project-myreads-starter/master/img/myreads.jpg) 
 
 
 ## TL;DR
 
-Para rodar o projeto é necessário apenas:
+Para rodar o projeto na porta 3000 é necessário apenas:
 
 * instalação com o comando `npm install`
 * servidor local iniciado com o comando de linha `npm start`
