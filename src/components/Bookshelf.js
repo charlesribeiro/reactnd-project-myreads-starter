@@ -30,11 +30,9 @@ class Bookshelf extends Component
                     {this.props.books.map(book =>
                     <li>
                         <Book 
-                        title={book.title} 
-                        authors={book.authors[0]} 
+                        authors={book.authors? book.authors[0]: "No author info"} 
                         width={128} 
                         height={192} 
-                        backgroundImage={book.imageLinks.smallThumbnail} 
                         changeBookShelf={this.props.changeBookShelf} 
                         book={book}>
                     

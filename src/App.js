@@ -2,6 +2,8 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Bookshelf from './components/Bookshelf';
+import Search from './components/Search';
+import Book from './components/Book';
 
 class BooksApp extends React.Component {
   state = {
@@ -15,6 +17,7 @@ class BooksApp extends React.Component {
     books:[],
     showSearchPage: false,
     name: "",
+    booksFromSearchAPI:[]
   }
 
   componentDidMount(){
@@ -22,17 +25,37 @@ class BooksApp extends React.Component {
       console.log(books);
       // debugger;
 
-      this.setState({
-        books
-      })
+      this.setState({books})
 
       // debugger;
     })
   }
 
+  changeSearchStatus= (event, book)=>{
+    const searchString = event.target.value;
+    console.log(searchString);
+
+    BooksAPI.search(searchString).then((booksFromSearchAPI)=>{
+    
+    console.log(booksFromSearchAPI);
+
+    if(booksFromSearchAPI.error)
+    {
+      debugger;
+      this.setState({booksFromSearchAPI:[]});
+    }
+    else
+    {
+      this.setState({booksFromSearchAPI});
+    }
+
+    
+    });
+  }
+
   changeBookShelf= (event, bookToUpdate) =>{
 
-    console.log("veio aqui...." , event.target.value, bookToUpdate.id);
+    // console.log("veio aqui...." , event.target.value, bookToUpdate.id);
 
     bookToUpdate.shelf = event.target.value;
 
@@ -48,10 +71,6 @@ class BooksApp extends React.Component {
     
     })
 
-    // if(this.state.books.)
-
-
-
   }
 
   render() {
@@ -59,6 +78,7 @@ class BooksApp extends React.Component {
       <div className="app">
 
         {this.state.showSearchPage ? (
+          
           <div className="search-books">
             <div className="search-books-bar">
               <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
@@ -71,12 +91,27 @@ class BooksApp extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author"/>
+                <input type="text" onChange={this.changeSearchStatus} placeholder="Search by title or author"/>
 
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">
+                {/* <Bookshelf shelfTitle="Search results" changeBookShelf ={this.changeBookShelf} books={this.state.booksFromSearchAPI}></Bookshelf> */}
+                {(this.state.booksFromSearchAPI !== undefined) ?this.state.booksFromSearchAPI.map(book =>
+                    <li>
+                        <Book 
+                        authors={book.authors? book.authors[0]: "No author info"} 
+                        width={128} 
+                        height={192} 
+                        changeBookShelf={this.changeBookShelf} 
+                        book={book}>
+                    
+                        </Book>
+                    </li>) :"aaarg"
+                    
+                }
+              </ol>
             </div>
           </div>
         ) : (
