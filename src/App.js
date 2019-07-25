@@ -111,7 +111,6 @@ class BooksApp extends React.Component {
                 {(this.state.booksFromSearchAPI !== undefined) ? this.state.booksFromSearchAPI.map(book =>
                     <li>
                         <Book 
-                        authors={book.authors? book.authors[0]: "No author info"} 
                         width={128} 
                         height={192} 
                         changeBookShelf={this.changeBookShelf} 
@@ -140,7 +139,7 @@ class BooksApp extends React.Component {
               <Link to = "/search">Add a book</Link>
             </div>
           
-            )}
+            
           </div>
 
         )}/>

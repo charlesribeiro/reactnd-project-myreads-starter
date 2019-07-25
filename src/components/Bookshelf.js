@@ -14,12 +14,16 @@ class Bookshelf extends Component
     componentDidMount()
     {
         console.log(this.props.books);
+
         //debugger;
     }
 
     
 
     render(){
+
+        // this.props.books.map(book=> {console.log("booook", book)});
+
         return(
             <div className="bookshelf">
                 <h2 className="bookshelf-title">{this.props.shelfTitle}</h2>
@@ -30,7 +34,6 @@ class Bookshelf extends Component
                     {this.props.books.map(book =>
                     <li>
                         <Book 
-                        authors={book.authors? book.authors[0]: "No author info"} 
                         width={128} 
                         height={192} 
                         changeBookShelf={this.props.changeBookShelf} 

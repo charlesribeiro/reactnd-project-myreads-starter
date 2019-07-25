@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 class Book extends Component{
 
     static propTypes = {
-            authors: PropTypes.string.isRequired,
             width: PropTypes.number,
             height: PropTypes.number,
             changeBookShelf: PropTypes.func.isRequired,
@@ -13,12 +12,9 @@ class Book extends Component{
 
     render()
     {
-      let authors = "No author information";
-      if(this.props.authors)
-      {
-        authors = this.props.authors;
-      }
 
+      let authors = this.props.book.authors? this.props.book.authors.join(" / "): "No author information";
+      
       return(
           <div className="book">
                         <div className="book-top">
