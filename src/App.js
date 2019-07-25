@@ -4,6 +4,7 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Bookshelf from './components/Bookshelf';
 import Book from './components/Book';
+import { Debounce  } from 'react-throttle';
 
 class BooksApp extends React.Component {
   state = {
@@ -14,7 +15,7 @@ class BooksApp extends React.Component {
 
   componentDidMount(){
     BooksAPI.getAll().then((books)=>{
-      console.log(books);
+      console.log("books", books);
       // debugger;
 
       this.setState({books})
@@ -50,7 +51,7 @@ class BooksApp extends React.Component {
 
           const bookFoundOnMainPage = this.state.books.filter(bookOnMainPage =>  bookOnMainPage.id === book.id)[0];
 
-          console.log(bookFoundOnMainPage);
+          // console.log(bookFoundOnMainPage);
 
           // book.shelf = "read";
           book.shelf = bookFoundOnMainPage ? bookFoundOnMainPage.shelf: "none";
@@ -82,9 +83,13 @@ class BooksApp extends React.Component {
     BooksAPI.update(bookToUpdate, event.target.value).then((booksFromAPI)=> {
       console.log(booksFromAPI);
 
-      this.setState(currentState => ({
-        books: [currentState.books.filter(livro => livro.id !== bookToUpdate.id), bookToUpdate]
-      }, ()=> {console.log("ok");}))
+      let booksNow = this.state.books.filter(livro => livro.id !== bookToUpdate.id); //retira o livro caso ele já exista na estante com outro status de leitura
+      booksNow.push(bookToUpdate); //introduz o livro com o status (shelf) de leitura correto
+
+
+      this.setState({
+        books: booksNow
+      });
     })
 
 
@@ -100,9 +105,9 @@ class BooksApp extends React.Component {
 
               <Link to="/">Close</Link>
               <div className="search-books-input-wrapper">
-
+              <Debounce  time="200" handler="onChange">
                 <input type="text" onChange={this.changeSearchStatus} placeholder="Search by title or author"/>
-
+              </Debounce >
               </div>
             </div>
             <div className="search-books-results">
